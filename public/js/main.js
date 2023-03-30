@@ -7,6 +7,7 @@ window.onload = function() {
 	for (let item of linksEdit) {
 	    item.addEventListener("click", editUser);
 	}
+	
 }
 
 function deleteUser(event){
