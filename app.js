@@ -50,7 +50,7 @@ function(req, res) {
 	} else if(req.body._id){
 		usuario = req.body;
 
-		db.users.updateOne({_id: ObjectId(req.params._id)}, 
+		db.users.updateOne({_id: ObjectId(req.body._id)}, 
 		{$set: {
 			first_name: req.body.first_name,
 			last_name: req.body.last_name,
