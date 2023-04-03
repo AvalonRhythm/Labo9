@@ -34,7 +34,6 @@ app.use(function (req, res, next) {
  });
 
 
-
 app.post('/users/add', [
 	check("first_name", "El nombre es obligatorio").notEmpty(),
 	check("last_name", "El apellido es obligatorio").notEmpty(),
@@ -48,31 +47,31 @@ function(req, res) {
 			users: users,
 			errors: errors.array()
 		});
-	} else if(document.getElementById("form").elements["submit"].value == "Enviar"){
-		var newUser = {
-			"first_name" : req.body.first_name,
-			"last_name" : req.body.last_name,
-			"email" : req.body.email,
-		};
-		db.users.insertOne(newUser, function(err, resp) {
-			if(err) {
-				console.log(err);
-			} else {
-				db.users.insertOne(newUser);
-			}
-			res.redirect('/');
-		});
-		console.log(newUser)
-	} else if(document.getElementById("form").elements["submit"].value == "Editar"){
-		/*
-		consulta.send();
+	} else if(req.body._id){
+		usuario = req.body;
 
+		db.users.updateOne({_id: ObjectId(req.params._id)}, 
+		{$set: {
+			first_name: req.body.first_name,
+			last_name: req.body.last_name,
+			email: req.body.email}},
+		(err, result) => {
+			if (err) {
+			  	console.error(err);
+			  	res.status(500).send('No se pudo actualizar el usuario');
+			} else {
+				res.redirect('/');
+			}
+		  });
+		  console.log(usuario)
+
+	} else{
 		var newUser = {
 			"first_name" : req.body.first_name,
 			"last_name" : req.body.last_name,
 			"email" : req.body.email,
 		};
-		db.users.insertOne(newUser, function(err, resp) {
+		db.users.insertOne(newUser, function(err, result) {
 			if(err) {
 				console.log(err);
 			} else {
@@ -81,9 +80,9 @@ function(req, res) {
 			res.redirect('/');
 		});
 		console.log(newUser)
-		*/
 	}
 });
+
 
 app.delete('/users/delete/:id', function(req, res) {
 	db.users.remove({_id: ObjectId(req.params.id)}, function(err, result) {
@@ -93,6 +92,7 @@ app.delete('/users/delete/:id', function(req, res) {
 		res.redirect(303, '/');
 	});
 });
+
 
 
 app.get("/users/edit/:id", function(req, res) { // peticion y respuesta como parametros

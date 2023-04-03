@@ -28,14 +28,15 @@ function deleteUser(event){
 }
 
 
-
 function editUser(event){
 
 	fetch('http://localhost:3000/users/edit/' + event.target.getAttribute('data-id'))
 	.then(response => response.json())
 	.then(data => {
 		// Utilizar los datos en formato JSON
-		console.log(data);
+		//console.log(data);
+
+		document.getElementById("form").elements["_id"].value = data[0]._id;
 		document.getElementById("form").elements["first_name"].value = data[0].first_name;
 		document.getElementById("form").elements["last_name"].value = data[0].last_name;
 		document.getElementById("form").elements["email"].value = data[0].email;
